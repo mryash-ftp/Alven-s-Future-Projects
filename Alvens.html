@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alvens · future OS</title>
+  <!-- Font Awesome 6 (free) for crisp icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 30%, #f0f4fa, #d9e2ef 80%);
+      color: #1a2639;
+      overflow-x: hidden;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    /* softer watermark with blend + rotation */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('Logo1.jpg') no-repeat center;
+      background-size: 50vw auto;
+      opacity: 0.18;
+      transform: rotate(-3deg) scale(0.9);
+      z-index: -1;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+      filter: blur(1px);
+    }
+
+    /* smooth blur header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5%;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 20px rgba(0, 20, 50, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand i {
+      font-size: 2rem;
+      color: #0066f0;
+      filter: drop-shadow(0 4px 6px rgba(0,100,255,0.2));
+    }
+
+    .brand-name {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      background: linear-gradient(130deg, #1f2b47, #0066cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-pill {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .nav-pill a {
+      text-decoration: none;
+      color: #1e2b41;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(4px);
+      transition: 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .nav-pill a:hover {
+      background: white;
+      color: #0066f0;
+      box-shadow: 0 6px 14px rgba(0,80,200,0.15);
+    }
+
+    /* hero modern */
+    .hero {
+      text-align: center;
+      padding: 5rem 8% 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      background: linear-gradient(145deg, #0f1a2f, #1950a0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.9s cubic-bezier(0.12, 0.71, 0.33, 1) both;
+    }
+
+    .hero-glow {
+      display: inline-block;
+      background: rgba(0, 102, 255, 0.12);
+      padding: 0.25rem 1.2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      color: #0066cc;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      border: 1px solid rgba(0,102,255,0.25);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      color: #2d3b55;
+      opacity: 0.9;
+      animation: fadeIn 1s 0.2s both;
+    }
+
+    .stats-mini {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.5rem;
+      margin: 3rem 0 2rem;
+    }
+
+    .stat-item {
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(9px);
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      border: 1px solid rgba(255,255,255,0.7);
+      font-weight: 500;
+      box-shadow: 0 10px 25px -12px rgba(0,0,0,0.1);
+    }
+
+    .stat-item i {
+      color: #0066f0;
+      margin-right: 8px;
+    }
+
+    .btn-flex {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.25s ease;
+      backdrop-filter: blur(4px);
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      background: #1a3c6e;
+      color: white;
+      box-shadow: 0 8px 18px -6px #1a3c6e70;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .btn-primary:hover {
+      background: #0f2b50;
+      transform: scale(1.04) translateY(-3px);
+      box-shadow: 0 18px 25px -8px #0a1e3c;
+    }
+
+    .btn-outline {
+      background: rgba(255,255,255,0.5);
+      color: #1e2f45;
+      border: 1px solid rgba(0,102,255,0.4);
+    }
+
+    .btn-outline:hover {
+      background: white;
+      border-color: #0066f0;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px -12px #0066f0;
+    }
+
+    /* Glass card — more breathing */
+    .glass-panel {
+      width: 90%;
+      max-width: 800px;
+      margin: 4rem auto 5rem;
+      padding: 2.8rem 2.8rem;
+      border-radius: 48px;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(18px) saturate(200%);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 25px 50px -20px rgba(0, 40, 80, 0.3), inset 0 1px 2px rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.7);
+      transition: all 0.3s;
+    }
+
+    .glass-panel:hover {
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 30px 55px -18px #1f3a6b;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title i {
+      background: #0066f0;
+      color: white;
+      padding: 0.6rem;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      box-shadow: 0 8px 14px -6px #0066f0;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
+      margin: 2.5rem 0 1rem;
+    }
+
+    .app-item {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(4px);
+      padding: 1rem 0.5rem;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.9);
+      transition: 0.15s;
+      color: #14273e;
+    }
+
+    .app-item i {
+      font-size: 1.4rem;
+      color: #0066f0;
+    }
+
+    .app-item:hover {
+      background: white;
+      transform: scale(1.02);
+      box-shadow: 0 8px 15px -10px #0e2b4b;
+    }
+
+    .badge-new {
+      background: #28a37f;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 60px;
+      margin-left: 8px;
+    }
+
+    .feature-highlight {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 2.8rem;
+      gap: 1.2rem;
+    }
+
+    .feature-card {
+      flex: 1 1 180px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 32px;
+      padding: 1.5rem 0.8rem;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    .feature-card i {
+      font-size: 2.2rem;
+      color: #004e9e;
+      margin-bottom: 0.5rem;
+    }
+
+    /* extras: download section */
+    .download-notes {
+      background: rgba(0,60,130,0.05);
+      border-radius: 40px;
+      padding: 1.2rem 1.8rem;
+      margin: 2rem 0 0;
+      font-size: 1rem;
+      border: 1px dashed rgba(0,102,255,0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 5% 2.5rem;
+      color: #2f405c;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255,255,255,0.6);
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .nav-pill a {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.85rem;
+      }
+      .glass-panel {
+        padding: 2rem 1.5rem;
+      }
+      .section-title {
+        font-size: 1.9rem;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+    }
+    body::before {
+  background: url('https://ibb.co/WNKdvPc0') no-repeat center;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image: url("https://ibb.co/WNKdvPc0");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 38vw auto;
+
+  opacity: 0.08;              /* watermark feel */
+  z-index: -1;
+  pointer-events: none;
+
+  filter: grayscale(100%) blur(0.6px);
+  transform: scale(1) rotate(-2deg);
+
+  mix-blend-mode: soft-light;
+}
+@keyframes breathe {
+  0% { opacity: 0.06; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.06; }
+}
+
+body::before {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+  </style>
+</head>
+<body>
+
+<body>
+
+<header>
+  <div class="brand">
+    <i class="fas fa-cloud-moon"></i>
+    <span class="brand-name">Alvens</span>
+  </div>
+  <div class="nav-pill">
+    <a href="#"><i class="fas fa-lightbulb"></i> Vision</a>
+    <a href="#"><i class="fas fa-brain"></i> AI OS</a>
+    <a href="#"><i class="fas fa-road"></i> Roadmap</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-glow">
+      <i class="fas fa-robot"></i> Alven Windows · AI-first OS Concept
+    </span>
+
+    <h1>Where Windows Becomes Intelligent</h1>
+
+    <p>
+      <strong>Alven Windows</strong> is not just an operating system —  
+      it is a <b>living AI environment</b> that protects, assists, animates,
+      and evolves with the user.
+    </p>
+
+    <div class="stats-mini">
+      <div class="stat-item"><i class="fas fa-shield"></i> AI-driven security</div>
+      <div class="stat-item"><i class="fas fa-microchip"></i> smart resource control</div>
+      <div class="stat-item"><i class="fas fa-wand-magic"></i> animated UI engine</div>
+    </div>
+
+    <div class="btn-flex">
+      <a href="#" class="btn btn-primary">
+        <i class="fas fa-eye"></i> View Future Concept
+      </a>
+      <a href="#" class="btn btn-outline">
+        <i class="fas fa-book"></i> Read Vision Plan
+      </a>
+    </div>
+  </section>
+
+  <!-- MAIN GLASS PANEL -->
+  <div class="glass-panel">
+    <div class="section-title">
+      <i class="fas fa-window-maximize"></i>
+      <span>Alven Windows · Core Vision</span>
+    </div>
+
+    <p style="font-size:1.2rem; margin-bottom:1.8rem;">
+      Alven Windows is designed around <strong>AI inside every window</strong>.
+      When a new window is created, an intelligent assistant is automatically
+      attached — guiding, protecting, and enhancing the experience.
+    </p>
+
+    <!-- FEATURES GRID -->
+    <div class="app-grid">
+      <div class="app-item"><i class="fas fa-robot"></i> Window-level AI</div>
+      <div class="app-item"><i class="fas fa-lock"></i> Smart Security</div>
+      <div class="app-item"><i class="fas fa-eye"></i> Visual Animations</div>
+      <div class="app-item"><i class="fas fa-microchip"></i> Performance Boost</div>
+      <div class="app-item"><i class="fas fa-folder-open"></i> Investigation Folder</div>
+      <div class="app-item"><i class="fas fa-comment-dots"></i> Ask AI Anytime</div>
+    </div>
+
+    <!-- HIGHLIGHTS -->
+    <div class="feature-highlight">
+      <div class="feature-card">
+        <i class="fas fa-virus-slash"></i>
+        <h4>No Auto-Delete</h4>
+        <p>Suspicious files are frozen, not removed</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-folder-tree"></i>
+        <h4>Investigation Zone</h4>
+        <p>AI analyzes before user decision</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-bell"></i>
+        <h4>Smart Alerts</h4>
+        <p>User notified every time</p>
+      </div>
+    </div>
+
+    <!-- SECURITY NOTE -->
+    <div class="download-notes">
+      <i class="fas fa-shield-halved"></i>
+      <strong>Security Philosophy:</strong>
+      Nothing is deleted silently.  
+      AI freezes risky content, investigates behavior, and asks the user before action.
+    </div>
+
+    <p style="margin-top:2rem; border-left:4px solid #0066f0; padding-left:1.2rem; font-style:italic;">
+      “If something goes wrong, don’t search settings — just ask the AI.”
+    </p>
+  </div>
+
+  <!-- NEXT UPDATE -->
+  <div style="width:90%; max-width:800px; margin:2rem auto 4rem; display:flex; gap:1.5rem; flex-wrap:wrap;">
+
+    <div style="flex:2; background:rgba(255,255,255,0.3); border-radius:40px; padding:2rem;">
+      <h3><i class="fas fa-microphone"></i> Next Update · Voice & Control</h3>
+
+      <ul style="list-style:none; margin-top:1rem;">
+        <li>✔ Control PC using voice commands</li>
+        <li>✔ AI asks permission before restricted actions</li>
+        <li>✔ Full transparency on data access</li>
+        <li>✔ User always in control</li>
+      </ul>
+    </div>
+
+    <div style="flex:1; background:rgba(255,255,255,0.3); border-radius:40px; padding:2rem;">
+      <i class="fas fa-infinity" style="font-size:2.5rem;"></i>
+      <h4>So Soon</h4>
+      <p>
+        UI evolution · deeper AI · smarter animations ·
+        safer computing
+      </p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div>
+    © 2025 Alvens · AI-Driven Future OS Concept
+  </div>
+  <div style="opacity:0.7;">
+    Designed with security · intelligence · creativity
+  </div>
+</footer>
+
+</body>
+</html>
+
